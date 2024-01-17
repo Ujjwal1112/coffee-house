@@ -1,0 +1,9 @@
+#bg {
+
+    background-color: rgb(94, 86, 61);
+    background-image: url("/static/images/coffee.avif");
+  }
+  
+#gbcolor {
+    background-color: rgb(94, 86, 61)
+}

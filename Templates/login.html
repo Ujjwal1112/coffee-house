@@ -16,7 +16,13 @@
                       style="width: 185px;" alt="logo">
                     <h4 class="mt-1 mb-5 pb-1">Feel the Nature with our Coffee </h4>
                   </div>
-  
+                 {% if messages %}
+                 {% for message in messages %}
+                  <div class="messages">
+                    <h5> {{ message }}</h5>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
                   <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <p>Please login to your account</p>

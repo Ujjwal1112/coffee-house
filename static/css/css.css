@@ -7,3 +7,9 @@
 #gbcolor {
     background-color: rgb(94, 86, 61)
 }
+
+.messages {
+  color: rgb(189, 45, 60);
+  text-shadow: 3cap;
+  size: 6ch
+}

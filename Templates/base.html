@@ -42,22 +42,16 @@
             <!-- Center elements -->
             <div class="order-lg-last col-lg-5 col-sm-8 col-8">
               <div class="d-flex float-end">
+                {% if not request.user.is_authenticated %}
                 <a
-                  href="https://github.com/mdbootstrap/bootstrap-material-design"
+                  href="{% url 'login' %}"
                   class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"
-                  target="_blank"
+                  
                 >
                   <i class="fa fa-user-alt m-1 me-md-2"></i>
-                  <p class="d-none d-md-block mb-0">Sign in</p>
+                  <p class="d-none d-md-block mb-0">Sign In </p>
                 </a>
-                <a
-                  href="https://github.com/mdbootstrap/bootstrap-material-design"
-                  class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"
-                  target="_blank"
-                >
-                  <i class="fa fa-heart m-1 me-md-2"></i>
-                  <p class="d-none d-md-block mb-0">Wishlist</p>
-                </a>
+                {% endif %}                
                 <a
                   href="https://github.com/mdbootstrap/bootstrap-material-design"
                   class="border rounded py-1 px-3 nav-link d-flex align-items-center"
@@ -66,8 +60,16 @@
                   <i class="fa fa-shopping-cart m-1 me-md-2"></i>
                   <p class="d-none d-md-block mb-0">My cart</p>
                 </a>
+                <a
+                href="{% url 'logout' %}"
+                class="border rounded py-1 px-3 nav-link d-flex align-items-center"
+                target="_blank"
+              >
+                <i class="fa fa-sign-out"></i>
+                <p class="d-none d-md-block mb-0">Sign Out</p>
+              </a>
               </div>
-            </div>
+            </div>  
             <!-- Center elements -->
 
             <!-- Right elements -->

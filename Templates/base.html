@@ -63,8 +63,7 @@
                 <a
                 href="{% url 'logout' %}"
                 class="border rounded py-1 px-3 nav-link d-flex align-items-center"
-                target="_blank"
-              >
+                      >
                 <i class="fa fa-sign-out"></i>
                 <p class="d-none d-md-block mb-0">Sign Out</p>
               </a>
@@ -118,6 +117,15 @@
                   >Home</a
                 >
               </li>
+              {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link text-dark" aria-current="page" href="{% url 'profile' %}"
+                  >My Profile</a
+                >
+              </li>
+              {% endif %}
+
+
               <li class="nav-item">
                 <a class="nav-link text-dark" href="#">Categories</a>
               </li>

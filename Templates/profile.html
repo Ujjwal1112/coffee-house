@@ -14,7 +14,7 @@
               <h5 class="my-3">{{ profile.user.first_name }}</h5>
               <p class="text-muted mb-4"> {{ profile.address }}</p>
               <div class="d-flex justify-content-center mb-2">
-                <button id="gbcolor" type="button" class="btn btn-primary">Edit My Profile</button>
+                <a href="{% url 'edit_profile'%}"><button id="gbcolor" type="button" class="btn btn-primary">Edit My Profile</button></a>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
                   <p class="mb-0">Joined Date</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"> {{ prfile.created_at }}</p>
+                  <p class="text-muted mb-0"> {{ profile.created_at }}</p>
                 </div>
               </div>
             </div>

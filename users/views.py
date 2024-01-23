@@ -3,7 +3,7 @@ from users.models import User, Profile
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-
+from users.helper import get_url_from_file
 # Create your views here.
 
 def index_page(request):
@@ -58,7 +58,7 @@ def user_register(request):
         user.save()
         
         Profile.objects.create(user=user, contact_num=contact_num, address=address)
-        return redirect('index')     
+        return redirect('login')     
                 
     return render(request, 'register.html')
 
@@ -76,4 +76,36 @@ def user_profile(request):
         "profile_pic" : profile_pic
     }
     return render(request, 'profile.html', context)
+
+def edit_profile(request):
+    default_profile_pic = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+    profile = Profile.objects.get(user_id = request.user.id)
+    if profile.profile_url:
+        profile_pic = profile.profile_url
+    if not profile.profile_url:
+        profile_pic = default_profile_pic
+           
+    context = {
+        "profile" : profile,
+        "profile_pic" : profile_pic
+    }
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        contact_num = request.POST.get("contact_num")
+        address = request.POST.get("address")
+        pic = request.FILES.get("pic")
+        
+        print(pic)
+        print('ddddd')
+        if pic:
+            url = get_url_from_file(request, pic)
+            print(url)
+            print('ffffff')
+            
+            profile.profile_url = url
+            profile.save()
+              
+        return redirect('profile')    
+    
+    return render(request, 'edit_profile.html', context)
     

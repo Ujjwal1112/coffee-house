@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section style="background-color: #eee;">
+    <form enctype="multipart/form-data" action="{% url 'edit_profile' %}" method="post">
+    {% csrf_token %}
+        <div class="container py-5">
+
+  
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img src=" {{ profile_pic }}" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px;">
+
+              <h5 class="my-3"> Change Profile Picture </h5>
+              <input name="pic" type="file">
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <input name="name" class="text-muted mb-0" value="{{ profile.user.first_name}}"> 
+
+                </div>              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Phone</p>
+                </div>
+                <div class="col-sm-9">
+                  <input name="contact_num" class="text-muted mb-0" value="{{ profile.contact_num}}">
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Address</p>
+                </div>
+                <div class="col-sm-9">
+                  <input name="address" class="text-muted mb-0" value="{{ profile.address}}">
+                </div>
+              </div>
+              <hr>
+pi
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mb-2">
+        <button id="gbcolor" type="submit" class="btn btn-primary"> SAVE</button>
+      </div>
+
+    </div>
+</form>
+  </section>
+
+
+{% endblock %}

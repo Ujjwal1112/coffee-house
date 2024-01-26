@@ -19,8 +19,11 @@ from django.urls import path, include
 import users.urls
 from django.conf import settings
 from django.conf.urls.static import static
+import coffees.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(users.urls)),
+    path('', include(coffees.urls)),
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -21,6 +21,11 @@ def user_login(request):
             if check_user:
                 messages.info(request, "you are logged in")
                 login(request, check_user)
+                profile  = Profile.objects.get(user_id=request.user.pk)
+                request.session['name']= profile.user.first_name
+               
+                
+                request.session['profile_pic'] = profile.profile_url
                 return redirect('index')
             if not check_user:
                 messages.error(request, 'Invalid email or password')
@@ -50,14 +55,14 @@ def user_register(request):
             messages.error(request, "Password doesn't match")
             return redirect('register')
         
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists() or User.objects.filter(username=email).exists():
             messages.error(request, "Email already exists")
             return redirect("register")
         user = User.objects.create(username=email, first_name=name, email=email)
         user.set_password(password)
         user.save()
         
-        Profile.objects.create(user=user, contact_num=contact_num, address=address)
+        Profile.objects.create(user=user, contact_num=contact_num, address=address, profile_url="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp")
         return redirect('login')     
                 
     return render(request, 'register.html')
@@ -95,16 +100,24 @@ def edit_profile(request):
         address = request.POST.get("address")
         pic = request.FILES.get("pic")
         
-        print(pic)
-        print('ddddd')
-        if pic:
-            url = get_url_from_file(request, pic)
-            print(url)
-            print('ffffff')
             
-            profile.profile_url = url
-            profile.save()
-              
+        if pic:
+            url = get_url_from_file(request, pic)   
+            profile.profile_url = url     
+            
+        if name and name != profile.user.first_name:
+            profile.user.first_name = name
+        
+        if contact_num and contact_num != profile.contact_num:
+            profile.contact_num = contact_num
+            
+        if address and address != profile.address:
+            profile.address = address
+            
+        profile.user.save()    
+        profile.save()
+        request.session['name']= profile.user.first_name
+        request.session['profile_pic'] = profile.profile_url                        
         return redirect('profile')    
     
     return render(request, 'edit_profile.html', context)

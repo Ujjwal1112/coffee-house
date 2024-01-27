@@ -13,3 +13,8 @@
   text-shadow: 3cap;
   size: 6ch
 }
+
+.center {
+  margin: auto;
+  width: 50%;
+}

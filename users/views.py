@@ -4,10 +4,24 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from users.helper import get_url_from_file
+from coffees.models import coffee
+from django.core.paginator  import Paginator
+
 # Create your views here.
 
 def index_page(request):
-    return render(request, 'index.html')
+    coffees = coffee.objects.all().order_by("created_at")
+    page = request.GET.get("page", 1)
+    pagination = Paginator(coffees, 2)
+    data_with_pagination = pagination.get_page(page)
+    total_pages = list(pagination.page_range)
+    data_with_pagination.after = 600
+    context = {
+        "coffees" : data_with_pagination,
+        "total_pages": total_pages
+    }   
+    
+    return render(request, 'index.html', context)
 
 def user_login(request):
     if request.method == "POST":

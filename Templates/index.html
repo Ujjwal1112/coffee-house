@@ -25,7 +25,9 @@
 
     <div class="row">
       {% for coffee in coffees %}
+      
       <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
+        <a style="text-decoration:none; color:black;" href="{% url 'coffee_detail' coffee_id=coffee.pk %}">
         <div class="card w-100 my-2 shadow-2-strong">
           <img
             src="{{ coffee.coffee_pic }}"
@@ -51,7 +53,11 @@
             </div>
           </div>
         </div>
+      </a>        
+        
+
       </div>
+
       {% endfor %}<br><br><br><br>
 
     </div>

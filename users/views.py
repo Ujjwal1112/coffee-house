@@ -4,13 +4,14 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from users.helper import get_url_from_file
-from coffees.models import coffee
+from coffees.models import Coffee
 from django.core.paginator  import Paginator
+from datetime import datetime
 
 # Create your views here.
 
 def index_page(request):
-    coffees = coffee.objects.all().order_by("created_at")
+    coffees = Coffee.objects.all().order_by("created_at")
     page = request.GET.get("page", 1)
     pagination = Paginator(coffees, 2)
     data_with_pagination = pagination.get_page(page)
@@ -128,7 +129,8 @@ def edit_profile(request):
         if address and address != profile.address:
             profile.address = address
             
-        profile.user.save()    
+        profile.user.save()
+        profile.updated_at = datetime.now() 
         profile.save()
         request.session['name']= profile.user.first_name
         request.session['profile_pic'] = profile.profile_url                        

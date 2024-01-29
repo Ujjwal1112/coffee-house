@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load mathfilters %}
 <section class="h-100 gradient-custom">
     <div class="container py-5">
       <div class="row d-flex justify-content-center my-4">
@@ -8,12 +9,19 @@
             <div class="card-header py-3">
               <h5 class="mb-0">Cart - {{total_items}} items </h5>
             </div>
+          
+            
+           
             <div class="card-body">
            {% if total_items %} {% for item in items %}
            {% with item.item as coffee %}
               <div class="row">
                 <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                   <!-- Image -->
+                  
+                  
+                  <form  action='cart' enctype='multipart/form-data' method='post' > 
+                    {% csrf_token %}
                   <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                     <img src="{{ coffee.coffee_pic }}"
                       class="w-100" alt="Blue Jeans Jacket" />
@@ -38,35 +46,44 @@
                   <!-- Data -->
                 </div>
   
-                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="col-lg-4 col-md-1 mb-1 mb-lg-0">
                   <!-- Quantity -->
                   <div class="d-flex mb-4" style="max-width: 300px">
-                    <button  id="gbcolor" class="btn btn-primary px-3 me-2"
+                    <div  id="gbcolor" class="btn btn-primary px-3 me-2"
                       onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                       <i class="fa fa-minus"></i>
-                    </button>
+                  </div>
   
                     <div class="form-outline">
                       <input id="form1" min="0" name="quantity" value="{{ item.quantity }}" type="number" class="form-control" />
                       <label class="form-label" for="form1">Quantity</label>
                     </div>
   
-                    <button id="gbcolor"class="btn btn-primary px-3 ms-2"
+                    <div id="gbcolor"class="btn btn-primary px-3 ms-2"
                       onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                       <i class="fa fa-plus"></i>
-                    </button>
+                  </div>
+                  <input type="hidden" value="{{ coffee.pk }}" name="coffee_id">
+                    <button type='submit' id="gbcolor"class="btn btn-primary px-3 ms-2">
+                    Update
+                  </button>
+                    
                   </div>
                   <!-- Quantity -->
   
                   <!-- Price -->
-                  <p class="text-start text-md-center">
-                    <strong>$17.99</strong>
+                  <p class="text-start text-rg-center">
+                    <strong>Price =  NPR {{ coffee.price_after_discount|floatformat:2 }}(Discount {{ coffee.discount_percentage }} %)</strong><br>
+                    <strong>Total = NPR {{ item.total_price|floatformat:2 }}</strong>
                   </p>
+               
                   <!-- Price -->
                 </div>
               </div>
           
               <hr class="my-4" />
+
+            </form>
               {% endwith %}
               {% endfor %}
               {% elif total_items == 0 %}
@@ -77,6 +94,7 @@
 
             </div>
           </div>
+        
 
 
         </div>
@@ -90,21 +108,21 @@
                 <li
                   class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                   Products
-                  <span>$53.98</span>
+                  <span>NPR {{ total_price|floatformat:2 }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                  Shipping
-                  <span>Gratis</span>
+                  Shipping Fee
+                  <span>NPR {{shipping_fee|floatformat:2}}</span>
                 </li>
                 <li
                   class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                   <div>
                     <strong>Total amount</strong>
                     <strong>
-                      <p class="mb-0">(including VAT)</p>
+                      <p class="mb-0">(including VAT {{ tax }} %)</p>
                     </strong>
                   </div>
-                  <span><strong>$53.98</strong></span>
+                  <span><strong>NPR {{ after_tax_amount|floatformat:2 }}</strong></span>
                 </li>
               </ul>
   

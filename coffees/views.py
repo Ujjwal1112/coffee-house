@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from coffees.models import Coffee,Cart
+from coffees.models import Coffee,Cart, InternalData, Orders
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
-from coffees.models import InternalData
-
+from users.models import Profile
+import uuid
 # Create your views here.
 
 def coffee_detail(request, coffee_id):
@@ -74,3 +74,61 @@ def shopping_cart(request):
         item.save()
         return redirect('cart')       
     return render(request, 'cart.html', context)
+
+def checkout(request):
+    items = Cart.objects.filter(user_id=request.user.id)
+    profile = Profile.objects.get(user_id=request.user.pk)
+    context = {
+        "items": items,
+        "profile": profile,
+        "total_items": request.GET['total_items'],
+        "after_t_amount" : request.GET['after_tax']
+    }
+    return render(request, 'checkout.html', context)
+
+
+def order(request):
+    orders = Orders.objects.filter(user_id=request.user.id)
+    context = {
+        'orders': orders
+    }
+    
+    if request.method == 'POST':
+        coffees = Cart.objects.filter(user_id=request.user.id)
+        address = request.POST['address']
+        district = request.POST['district']
+        house_number = request.POST['house_number']
+        street = request.POST['street']
+        total_items = int(request.POST['total_items'])
+        after_t_amount = float(request.POST['after_t_amount'])
+        instructions = request.POST['instructions']
+        order_id =uuid.uuid4()
+        status = "PND"
+    
+        data={
+            "order_id" : order_id,
+            "user_id" : request.user.id,
+            "after_tax_amount" : after_t_amount,
+            "house_number" : house_number,
+            "street" : street,
+            "other_addresses" : address,
+            "district": district,
+            "instructions" : instructions,
+            "status" : status,
+            "total_items": total_items 
+        }
+        
+        order = Orders.objects.create(**data)
+        order.save()
+        order.coffees.add(*(coffees))
+        order.save()
+        return redirect('order')        
+        
+    
+
+    return render(request, 'order.html', context)
+
+
+def thank_you(request):
+    return render(request, 'thank-you.html',) 
+    

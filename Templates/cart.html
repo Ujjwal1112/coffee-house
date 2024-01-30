@@ -125,10 +125,11 @@
                   <span><strong>NPR {{ after_tax_amount|floatformat:2 }}</strong></span>
                 </li>
               </ul>
-  
-              <button  id="gbcolor" type="button" class="btn btn-primary btn-lg btn-block">
+              <a href="/checkout?total_items={{total_items}}&after_tax={{after_tax_amount}}" style="text-decoration:non">
+              <button  id="gbcolor" type="submit" class="btn btn-primary btn-lg btn-block">
                 Go to checkout
               </button>
+            </a>
             </div>
           </div>
         </div>

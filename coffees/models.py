@@ -54,11 +54,29 @@ class InternalData(models.Model):
         return "InternalData"
 
 
-class orders(models.Model):
+class Orders(models.Model):
     order_id = models.CharField(unique=True, max_length=300)
+    coffees = models.ManyToManyField(Cart)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     after_tax_amount = models.IntegerField()
-    coffees = models.JSONField()
+    house_number = models.CharField(max_length=100)
+    street = models.CharField(max_length=200)
+    district = models.CharField(max_length=100)
+    other_addresses = models.CharField(max_length=200)
+    instructions = models.CharField(max_length=300)
+    status_choices = {"DLV" : "Delivered",  
+        "PND" : "Pending", 
+        "OTW" : "On The Way", 
+        "XXD" : "Cancelled"
+        }
+    status = models.CharField(max_length=200, choices=status_choices)
+    total_items = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    
+    def __str__(self):
+        return f"{self.user.first_name}'s order number {self.id}" 
+    
     
     
 

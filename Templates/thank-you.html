@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card-header px-4 py-5">
+    <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: #a8729a;">{{request.user.first_name}}</span>!</h5><br>
+    <a href="{% url 'order' %}">Click here to view order list </a>
+ </div>
+
+
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %} {% block content %}
+
+
+<section class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-8 col-lg-8 mb-4">
+
+
+        <!-- Checkout -->
+        <div class="card shadow-0 border">
+          <div class="p-4">
+            <h5 class="card-title mb-3">Checkout</h5>
+            <div class="row">
+              <div class="col-6 mb-3">
+                <p class="mb-0">Name :  {{request.user.first_name }}</p>
+                <p class="mb-0">Phone Number :  {{ profile.contact_num }}</p>
+                <p class="mb-0">Email :  {{request.user.email }}</p>
+                
+
+              </div>
+            </div>
+
+
+
+            <hr class="my-4" />
+
+<form enctype='multipart/form-data' method="post" action="{% url 'order' %}">
+  {% csrf_token %}          
+  <div class="row">
+              <div class="col-sm-8 mb-3">
+                <p class="mb-0">Address</p>
+                <div class="form-outline">
+                  <input
+                    name="address"
+                    type="text"
+                    id="typeText"
+                    placeholder="Type here"
+                    class="form-control"
+                    required="required"
+                  />
+                </div>
+              </div>
+
+              <div class="col-sm-4 mb-3">
+                <p class="mb-0">District</p>
+                <select name="district" class="form-select">
+                  <option value="kathmandu">Kathmandu</option>
+                  <option value="lalitpur">Lalitpur</option>
+                  <option value="Bhaktapur">Bhaktapur</option>
+                </select>
+              </div>
+
+              <div class="col-sm-4 mb-3">
+                <p class="mb-0">House Number</p>
+                <div class="form-outline">
+                  <input
+                    name="house_number"
+                    type="text"
+                    id="typeText"
+                    placeholder="Type here"
+                    class="form-control"
+                    required="required"
+                  />
+                </div>
+              </div>
+
+              <div class="col-sm-4 col-6 mb-3">
+                <p class="mb-0">Street Name
+                </p>
+                <div class="form-outline">
+                  <input required="required" type="text" name="street" id="typeText" class="form-control" />
+                </div>
+              </div>
+
+
+            </div>
+
+
+
+            <div class="mb-3">
+              <p class="mb-0">Instructions</p>
+              <div class="form-outline">
+                <textarea
+                  class="form-control"
+                  id="textAreaExample1"
+                  rows="2"
+                  name="instructions"
+                ></textarea>
+              </div>
+            </div>
+            
+            
+            <H5>TOTAL PRICE NPR {{ after_t_amount|floatformat:2 }} </h4>
+
+            <div class="float-end">
+              <input type="hidden" value="{{ total_items }}" name="total_items">
+              <input type="hidden" value="{{ after_t_amount }}" name = "after_t_amount">
+              <button class="btn btn-light border">Cancel</button> 
+
+              <button type="submit" class="btn btn-success shadow-0 border">Proceed to Buy</button>
+              </a>
+            </div>
+          </form>
+          </div>
+
+        </div>
+        
+        <!-- Checkout -->
+      </div>
+      <div
+        class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end"
+      >
+        <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px">
+          <h6 class="text-dark my-4">Items in cart (Total {{total_items}} items )</h6>
+            {% for item in items%}
+            {% with item.item as coffee %}
+          <div class="d-flex align-items-center mb-4">
+            <div class="me-3 position-relative">
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary"
+              >
+                1
+              </span>
+              <img
+                src="{{ coffee.coffee_pic }}"
+                style="height: 70px; width: 70x"
+                class="img-sm rounded border"
+              />
+            </div>
+            <div class="">
+              {{ coffee.name }}     
+             
+              <div class="price text-muted">Total: NPR {{item.total_price|floatformat:2 }}</div>
+            </div>
+          </div>
+          {% endwith %}
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

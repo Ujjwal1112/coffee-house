@@ -38,7 +38,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)
     total_price = models.IntegerField(null=True, blank=True)
     
 
@@ -56,9 +56,9 @@ class InternalData(models.Model):
 
 class Orders(models.Model):
     order_id = models.CharField(unique=True, max_length=300)
-    coffees = models.ManyToManyField(Cart)
+    coffees = models.JSONField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    after_tax_amount = models.IntegerField()
+    after_tax_amount = models.FloatField()
     house_number = models.CharField(max_length=100)
     street = models.CharField(max_length=200)
     district = models.CharField(max_length=100)
@@ -74,12 +74,18 @@ class Orders(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     
+    def before_tax(self):
+        coffees = self.coffees
+        order_total_before_tax = float(sum([coffee["total_price"] for coffee in coffees ]))
+        return order_total_before_tax   
+    
+    
+    
     def __str__(self):
         return f"{self.user.first_name}'s order number {self.id}" 
     
     
     
-
 
     
     

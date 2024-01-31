@@ -54,9 +54,9 @@
                 {% endif %}    
                 {% if request.user.is_authenticated %}            
                 <a
-                  href="https://github.com/mdbootstrap/bootstrap-material-design"
+                  href="{% url 'cart' %}"
                   class="border rounded py-1 px-3 nav-link d-flex align-items-center"
-                  target="_blank"
+
                 >
                   <i class="fa fa-shopping-cart m-1 me-md-2"></i>
                   <p class="d-none d-md-block mb-0">My cart</p>
@@ -136,25 +136,11 @@
                   >My Profile</a
                 >
               </li>
+
               {% endif %}
 
 
-              <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Categories</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Hot offers</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Gift boxes</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Projects</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Menu item</a>
-              </li>
-              <li class="nav-item">
+               <li class="nav-item">
                 <a class="nav-link text-dark" href="#">Menu name</a>
               </li>
               <!-- Navbar dropdown -->

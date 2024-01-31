@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from users.models import User, Profile
+from users.models import User, Profile, ConsumedCoffee
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -82,8 +82,9 @@ def user_register(request):
                 
     return render(request, 'register.html')
 
-
+@login_required
 def user_profile(request):
+    coffees = ConsumedCoffee.objects.filter(user_id = request.user.id)
     default_profile_pic = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
     profile = Profile.objects.get(user_id = request.user.id)
     if profile.profile_url:
@@ -93,10 +94,12 @@ def user_profile(request):
            
     context = {
         "profile" : profile,
-        "profile_pic" : profile_pic
+        "profile_pic" : profile_pic,
+        "coffees" : coffees
     }
     return render(request, 'profile.html', context)
 
+@login_required
 def edit_profile(request):
     default_profile_pic = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
     profile = Profile.objects.get(user_id = request.user.id)

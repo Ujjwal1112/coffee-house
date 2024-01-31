@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from coffees.models import Coffee,Cart, InternalData, Orders
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
-from users.models import Profile
+from users.models import Profile, ConsumedCoffee
 import uuid
 # Create your views here.
 
@@ -41,7 +41,9 @@ def add_to_cart(request, coffee_id):
     if not item:
         flag=True
     if flag is True:
-        Cart.objects.create(user_id=request.user.id, item_id=coffee_id, quantity=1)
+        item = Coffee.objects.get(id=coffee_id)
+        
+        Cart.objects.create(user_id=request.user.id, item_id=coffee_id, quantity=1, total_price=item.price_after_discount()*1 )
     return redirect('cart')
 
 
@@ -75,6 +77,17 @@ def shopping_cart(request):
         return redirect('cart')       
     return render(request, 'cart.html', context)
 
+
+
+@login_required
+def remove_from_cart(request, cart_id):
+    item = Cart.objects.get(id=cart_id)
+    item.delete()
+    return redirect('cart')
+
+
+
+@login_required
 def checkout(request):
     items = Cart.objects.filter(user_id=request.user.id)
     profile = Profile.objects.get(user_id=request.user.pk)
@@ -86,15 +99,21 @@ def checkout(request):
     }
     return render(request, 'checkout.html', context)
 
-
+@login_required
 def order(request):
-    orders = Orders.objects.filter(user_id=request.user.id)
+    orders = Orders.objects.filter(user_id=request.user.id).order_by('-created_at')
+    data = InternalData.objects.all()[0]
+    shipping_fee = data.shipping_fee
+    tax = data.tax_percentage
     context = {
-        'orders': orders
+        'orders': orders,
+        'total_orders': len(orders),
+        "shipping_fee" : shipping_fee,
+        "tax" : tax,
     }
     
     if request.method == 'POST':
-        coffees = Cart.objects.filter(user_id=request.user.id)
+        coffees = Cart.objects.filter(user_id=request.user.id).order_by('created_at')
         address = request.POST['address']
         district = request.POST['district']
         house_number = request.POST['house_number']
@@ -102,9 +121,27 @@ def order(request):
         total_items = int(request.POST['total_items'])
         after_t_amount = float(request.POST['after_t_amount'])
         instructions = request.POST['instructions']
-        order_id =uuid.uuid4()
-        status = "PND"
-    
+        order_id =uuid.uuid1()
+        status = "Pending"
+
+        coffee_json = []
+        for coffee in coffees:
+            coffee_json.append({
+                "name" : coffee.item.name,
+                "picture" : coffee.item.coffee_pic,
+                "quantity" : coffee.quantity,
+                "total_price" : coffee.total_price,
+                "category" : coffee.item.category.name
+            })
+            if ConsumedCoffee.objects.filter(user_id=request.user.id, coffee_id=coffee.item.id).exists():
+                item = ConsumedCoffee.objects.get(user_id=request.user.id, coffee_id=coffee.item.id)
+                item.quantity = item.quantity + coffee.quantity
+                item.save()
+            else:
+                ConsumedCoffee.objects.create(user_id=request.user.id, coffee_id=coffee.item.id, 
+                                          quantity = coffee.quantity)
+
+            
         data={
             "order_id" : order_id,
             "user_id" : request.user.id,
@@ -115,20 +152,20 @@ def order(request):
             "district": district,
             "instructions" : instructions,
             "status" : status,
-            "total_items": total_items 
+            "total_items": total_items,
+            "coffees": coffee_json 
         }
         
         order = Orders.objects.create(**data)
         order.save()
-        order.coffees.add(*(coffees))
-        order.save()
-        return redirect('order')        
+        coffees.delete()
+        return redirect('thank-you')        
         
     
 
     return render(request, 'order.html', context)
 
-
+@login_required
 def thank_you(request):
     return render(request, 'thank-you.html',) 
     

@@ -18,3 +18,47 @@
   margin: auto;
   width: 50%;
 }
+
+th, td {
+  padding: 10px;
+}
+
+a{
+  text-decoration: none;
+}
+
+thead{
+  font-weight: bold;
+}
+
+/* Style for the search container */
+.search-container {
+  position: relative;
+  margin: 20px;
+}
+
+/* Style for the search input */
+.search-input {
+  padding: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Style for the search button */
+.search-button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Optional: Add styles for better responsiveness */
+@media (max-width: 600px) {
+  .search-input {
+    width: 100%;
+  }
+}

@@ -1,7 +1,11 @@
 {% extends "base.html" %} {% block content %}
 {% load mathfilters %}
 <section>
+
+
+
   <div class="text-white py-5" id="bg">
+    
     <div class="container py-5">
       <h1>
         "Awaken Your Senses, Sip by Sip: Where Every Brew Tells a Story.
@@ -22,8 +26,22 @@
     <header class="mb-4">
       <h3>Our products</h3>
     </header>
+    <form action="{% url 'index'%}">
+    <div class="search-container">
+      <div class="input-group float-center">
+        <div class="form-outline">
+          <input name="search" type="search" value="{{ search }}"id="form1" class="search-input" />
+        </div>
+        <button id="bg" type="submit" class="search-button">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+      <label class="form-label" for="form1">Search</label>
+    </div>
+  </form>
 
     <div class="row">
+
       {% for coffee in coffees %}
       
       <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
@@ -62,6 +80,7 @@
     
 
   </div>
+
   <div class="center">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -80,6 +99,7 @@
       </ul>
     </nav>
   </div>
+
 
 </section>
 

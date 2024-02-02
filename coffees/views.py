@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from coffees.models import Coffee,Cart, InternalData, Orders
+from coffees.models import Coffee,Cart, InternalData, Orders, Category
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from users.models import Profile, ConsumedCoffee
 import uuid
+from django.core.paginator import Paginator
+from django.db.models import Q
 # Create your views here.
 
 def coffee_detail(request, coffee_id):
@@ -13,6 +15,18 @@ def coffee_detail(request, coffee_id):
     }
     return render(request, "coffee_detail.html", context)
 
+def category(request):
+    search = request.GET.get('search')
+    if search:
+        categori = Category.objects.filter(Q(name__icontains=search) | Q(description__icontains=search))
+    else:   
+        search = ''
+        categori = Category.objects.all()
+    context ={
+        'categories' : categori,
+        'search': search
+    }    
+    return render(request, 'Category.html', context)
 
 @login_required
 def add_to_cart(request, coffee_id):
@@ -102,14 +116,21 @@ def checkout(request):
 @login_required
 def order(request):
     orders = Orders.objects.filter(user_id=request.user.id).order_by('-created_at')
+    page = request.GET.get('page', 1)
+    pagination = Paginator(orders, 3)
+    data_with_pagination = pagination.get_page(page)
+    total_pages = list(pagination.page_range)
+    
+    
     data = InternalData.objects.all()[0]
     shipping_fee = data.shipping_fee
     tax = data.tax_percentage
     context = {
-        'orders': orders,
+        'orders': data_with_pagination,
         'total_orders': len(orders),
         "shipping_fee" : shipping_fee,
         "tax" : tax,
+        "total_pages": total_pages
     }
     
     if request.method == 'POST':

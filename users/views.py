@@ -7,11 +7,17 @@ from users.helper import get_url_from_file
 from coffees.models import Coffee
 from django.core.paginator  import Paginator
 from datetime import datetime
+from django.db.models import Q
 
 # Create your views here.
 
 def index_page(request):
-    coffees = Coffee.objects.all().order_by("created_at")
+    search = request.GET.get('search')
+    if search:
+        coffees = Coffee.objects.filter(Q(name__icontains=search) | Q(description__contains=search))
+    else:
+        search = ''
+        coffees = Coffee.objects.all().order_by("created_at")
     page = request.GET.get("page", 1)
     pagination = Paginator(coffees, 2)
     data_with_pagination = pagination.get_page(page)
@@ -19,7 +25,8 @@ def index_page(request):
     data_with_pagination.after = 600
     context = {
         "coffees" : data_with_pagination,
-        "total_pages": total_pages
+        "total_pages": total_pages,
+        "search" : search
     }   
     
     return render(request, 'index.html', context)

@@ -10,7 +10,7 @@ class Profile(models.Model):
     address = models.CharField(max_length=300)
     created_at =  models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now = True)
-    profile_url = models.CharField(max_length=400, blank=True, null=True)
+    profile_url = models.CharField(max_length=400, blank=True, null=True) 
     
     def __str__(self):
         return self.user.first_name

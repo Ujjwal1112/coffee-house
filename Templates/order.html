@@ -109,6 +109,25 @@
         </div>
           <br><hr>
           {% endfor %}
+          <div class="center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                {% if orders.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ orders.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                
+                {% for pages in total_pages %}
+                <li class="page-item"><a class="page-link" href="?page={{ pages }}">{{ pages }}</a></li>
+                {% endfor %}
+                {% if orders.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number}}">Next</a></li>
+              {% endif %}
+              </ul>
+            </nav>
+          </div>
+
           {% elif not orders %}
           <div class="card-header px-4 py-5">
             <h5 class="text-muted mb-0">

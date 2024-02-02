@@ -68,8 +68,7 @@
                 <i class="fa fa-sign-out"></i>
                 <p class="d-none d-md-block mb-0">Sign Out</p>
               </a>
-              {% endif %}
-              {% if request.user.is_authenticated %}            
+                        
               <a
               
                 href="{% url 'profile' %}"
@@ -84,19 +83,7 @@
             </div>  
             <!-- Center elements -->
 
-            <!-- Right elements -->
-            <div class="col-lg-5 col-md-12 col-12">
-              <div class="input-group float-center">
-                <div class="form-outline">
-                  <input type="search" id="form1" class="form-control" />
-                  <label class="form-label" for="form1">Search</label>
-                </div>
-                <button id="bg" type="button" class="btn btn-primary shadow-0">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-            <!-- Right elements -->
+
           </div>
         </div>
       </div>
@@ -130,44 +117,27 @@
                   >Home</a
                 >
               </li>
-              {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link text-dark" aria-current="page" href="{% url 'profile' %}"
-                  >My Profile</a
-                >
-              </li>
-
-              {% endif %}
+         
 
 
                <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Menu name</a>
+                <a class="nav-link text-dark" href="{% url 'category' %}">Category</a>
               </li>
               <!-- Navbar dropdown -->
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle text-dark"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-mdb-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Others
-                </a>
-                <!-- Dropdown menu -->
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a class="dropdown-item" href="#">Action</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Another action</a>
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                </ul>
+
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link text-dark" aria-current="page" href="{% url 'profile' %}"
+                    >My Profile</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-dark" aria-current="page" href="{% url 'order' %}"
+                    >My Orders</a
+                  >
+                </li>
+  
+                {% endif %}
               </li>
             </ul>
             <!-- Left links -->

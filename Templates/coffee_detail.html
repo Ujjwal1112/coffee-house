@@ -4,6 +4,16 @@
 <!-- content -->
 <section class="py-5">
   <div class="container">
+    {% if messages%}
+    <div class="messages">
+    <h5>
+      {% for message in messages %}
+      {{ message }}
+      {% endfor%}
+      
+    </h5>
+  </div>
+  {% endif %}
     <div class="row gx-5">
       <aside class="col-lg-6">
         <div class="border rounded-4 mb-3 d-flex justify-content-center">
@@ -44,7 +54,7 @@
           <p>{{ coffee.description }}</p>
         </hr>
           <div class="row mb-4"></div>
-          <a href="{% url "add_to_cart" coffee_id=coffee.pk %}" id="gbcolor" class="btn btn-primary shadow-0">
+          <a href="{% url "add_to_cart" coffee_id=coffee.pk %}?path={{ request.path }}" id="gbcolor" class="btn btn-primary shadow-0">
             <i class="me-1 fa fa-shopping-basket"></i> Add to cart
           </a>
         </div>

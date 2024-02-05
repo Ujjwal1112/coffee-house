@@ -5,14 +5,17 @@
 <div>
         <h3>
     Our Categories</h3>
-</div>
+</div >
     <hr><br>
+    <ul style="font-size:35px">
 {% for category in categories %}
 
-{{ category.name }}
+
+<li><a href = "{% url "cat_coffee" cat_id=category.pk %}">{{ category.name }}</li></a>
 
 
 {% endfor %}
+</ul>
 
 </div>
 </section>

@@ -6,6 +6,7 @@ from users.models import Profile, ConsumedCoffee
 import uuid
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib import messages
 # Create your views here.
 
 def coffee_detail(request, coffee_id):
@@ -28,6 +29,20 @@ def category(request):
     }    
     return render(request, 'Category.html', context)
 
+def cat_coffee(request, cat_id):
+    coffees = Coffee.objects.filter(category_id=cat_id)
+    cat = Category.objects.get(id=cat_id).name
+    page = request.GET.get("page", 1)
+    pagination = Paginator(coffees, 8)
+    data_with_pagination = pagination.get_page(page)
+    total_pages = list(pagination.page_range)
+    context = {
+        "coffees": data_with_pagination,
+        "cat_name" : cat,
+        "total_pages" : total_pages
+    }
+    return render(request, 'cat_coffee.html', context)
+
 @login_required
 def add_to_cart(request, coffee_id):
     # alternative way 
@@ -40,6 +55,11 @@ def add_to_cart(request, coffee_id):
     # if not cart.objects.filter(user_id=request.user.pk, item_id=coffee_id).exists():
     #     cart.objects.create(user_id=request.user.id, item_id=coffee_id, quantity=1)    
     
+    coffee_item = Coffee.objects.get(id=coffee_id)
+    if coffee_item.stock_quantity == 0:
+        messages.error(request, f"Sorry {coffee_item.name} is out of stock")
+        return redirect(request.GET.get('path'))
+    print(request.GET.get('path'))    
     item = Cart.objects.filter(user_id=request.user.pk)
     flag = False
     if item:
@@ -161,6 +181,10 @@ def order(request):
             else:
                 ConsumedCoffee.objects.create(user_id=request.user.id, coffee_id=coffee.item.id, 
                                           quantity = coffee.quantity)
+                
+            coffee_item = Coffee.objects.get(id=coffee.item.id)
+            coffee_item.stock_quantity = coffee_item.stock_quantity-coffee.quantity
+            coffee_item.save()
 
             
         data={

@@ -21,7 +21,7 @@ class Coffee(models.Model):
     coffee_pic = models.CharField(max_length=300)
     price = models.IntegerField()
     stock_quantity = models.IntegerField(null=True)
-    discount_percentage = models.IntegerField(blank = True, null=True)
+    discount_percentage = models.IntegerField(blank = True, null=True, default=0)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     

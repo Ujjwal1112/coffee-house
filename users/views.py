@@ -19,7 +19,7 @@ def index_page(request):
         search = ''
         coffees = Coffee.objects.all().order_by("created_at")
     page = request.GET.get("page", 1)
-    pagination = Paginator(coffees, 2)
+    pagination = Paginator(coffees, 8)
     data_with_pagination = pagination.get_page(page)
     total_pages = list(pagination.page_range)
     data_with_pagination.after = 600
@@ -148,3 +148,6 @@ def edit_profile(request):
     
     return render(request, 'edit_profile.html', context)
     
+    
+def about_us(request):
+    return render(request, 'about_us.html')

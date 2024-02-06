@@ -150,7 +150,8 @@ def order(request):
         'total_orders': len(orders),
         "shipping_fee" : shipping_fee,
         "tax" : tax,
-        "total_pages": total_pages
+        "total_pages": total_pages,
+        "current_page" : int(page)
     }
     
     if request.method == 'POST':

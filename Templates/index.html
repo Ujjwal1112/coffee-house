@@ -1,5 +1,4 @@
 {% extends "base.html" %} {% block content %}
-{% load mathfilters %}
 <section>
 
 
@@ -72,12 +71,16 @@
                    <div
               class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto"
             >
+            {% if coffee.stock_quantity == 0 %}
+            <p class="messages" style="font-size:20px;"> Out Of Stock ! </p>
+            {% else %} 
               <a id="gbcolor" href="{% url "add_to_cart" coffee_id=coffee.pk %}?path={{ request.path }}" class="btn btn-primary shadow-0 me-1"
                 >Add to cart</a
               >
               <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"
                 ><i class="fa fa-heart fa-lg text-secondary px-1"></i
               ></a>
+                {% endif %}
             </div>
           </div>
         </div>
@@ -103,7 +106,13 @@
         {% endif %}
         
         {% for pages in total_pages %}
-        <li class="page-item"><a class="page-link" href="?page={{ pages }}">{{ pages }}</a></li>
+        {% if page == pages %}
+        <li class="page-item" ><a class="page-link" style="background-color:rgb(232, 205, 125);" href="?page={{ pages }}">{{ pages }}</a></li>
+        {% else %}
+        <li class="page-item" ><a class="page-link" href="?page={{ pages }}">{{ pages }}</a></li>
+        
+        {% endif %}
+   
         {% endfor %}
         {% if coffees.has_next %}
         <li class="page-item"><a class="page-link" href="?page={{ coffees.next_page_number}}">Next</a></li>

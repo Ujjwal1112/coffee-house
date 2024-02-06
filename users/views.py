@@ -26,9 +26,10 @@ def index_page(request):
     context = {
         "coffees" : data_with_pagination,
         "total_pages": total_pages,
-        "search" : search
+        "search" : search,
+        "page" : int(page)
     }   
-    
+
     return render(request, 'index.html', context)
 
 def user_login(request):

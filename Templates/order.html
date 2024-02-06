@@ -119,7 +119,12 @@
                 {% endif %}
                 
                 {% for pages in total_pages %}
+
+                {% if current_page == pages %}
+                <li class="page-item"><a class="page-link" style="background-color:rgb(232, 205, 125);" href="?page={{ pages }}">{{ pages }}</a></li>
+                {% else %}
                 <li class="page-item"><a class="page-link" href="?page={{ pages }}">{{ pages }}</a></li>
+                {% endif %}
                 {% endfor %}
                 {% if orders.has_next %}
                 <li class="page-item"><a class="page-link" href="?page={{ orders.next_page_number}}">Next</a></li>

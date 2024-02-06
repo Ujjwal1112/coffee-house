@@ -30,7 +30,7 @@
 
       {% for coffee in coffees %}
       
-      <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
+      <div class="col-lg-3 col--6 col-sm-6 d-flex">
         <a style="text-decoration:none; color:black;" href="{% url 'coffee_detail' coffee_id=coffee.pk %}">
         <div class="card w-100 my-2 shadow-2-strong">
           <img
@@ -46,12 +46,16 @@
                    <div
               class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto"
             >
+            {% if coffee.stock_quantity == 0 %}
+            <p class="messages" style="font-size:20px;"> Out Of Stock ! </p>
+            {% else %} 
               <a id="gbcolor" href="{% url "add_to_cart" coffee_id=coffee.pk %}?path={{ request.path }}" class="btn btn-primary shadow-0 me-1"
                 >Add to cart</a
               >
               <a href="#!" class="btn btn-light border px-2 pt-2 icon-hover"
                 ><i class="fa fa-heart fa-lg text-secondary px-1"></i
               ></a>
+                {% endif %}
             </div>
           </div>
         </div>

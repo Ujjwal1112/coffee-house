@@ -88,10 +88,7 @@
             </form>
               {% endwith %}
               {% endfor %}
-              {% elif total_items == 0 %}
-              <h3>You donot have any items in your carts </h3>
-              
-              {% endif %}
+
               
 
             </div>
@@ -133,6 +130,13 @@
               </button>
             </a>
             </div>
+            {% elif total_items == 0 %}
+            <h3>You donot have any items in your carts </h3>
+            <a href="{% url 'index' %}">
+            Go to Home Page to Shop More !  
+            </a>
+            
+            {% endif %}
           </div>
         </div>
       </div>

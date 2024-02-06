@@ -40,12 +40,13 @@
         <div class="ps-lg-3">
           <h4 class="title text-dark">{{ coffee.name }} <br /></h4>
           <div class="d-flex flex-row my-3">
-            {% if coffee.stock_quantity %}
-            <span class="text-success ms-2">In stock</span>
-        {% endif %}  
+         
         {% if not coffee.stock_quantity %}
         <span style="color:red">Out of Stock </span>
     {% endif %}  
+    {% if coffee.stock_quantity %}
+    <span class="text-success ms-2">In stock</span>
+{% endif %} 
         </div>
           <div class="mb-3">
             <span class="h5">Rs {{ coffee.price }}</span>
@@ -54,9 +55,11 @@
           <p>{{ coffee.description }}</p>
         </hr>
           <div class="row mb-4"></div>
+          {% if coffee.stock_quantity %}
           <a href="{% url "add_to_cart" coffee_id=coffee.pk %}?path={{ request.path }}" id="gbcolor" class="btn btn-primary shadow-0">
             <i class="me-1 fa fa-shopping-basket"></i> Add to cart
           </a>
+          {% endif %}
         </div>
       </main>
     </div>
